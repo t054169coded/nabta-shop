@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nabta نبتة — indoor plants for the home, Kuwait</title>
+<meta name="description" content="Six indoor plants, each with a growth preview: hover a plant to see how tall it will be when fully grown, next to a person for scale.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..500&family=Inter:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<a class="sr-only" href="#products">Skip to the plants</a>
+
+<!-- ------------------------------------------------------------ header -->
+<header class="site-header">
+  <div class="wrap site-header__in">
+    <a class="brand" href="index.html">
+      <svg class="brand__mark" width="30" height="30" viewBox="0 0 30 30" aria-hidden="true">
+        <circle cx="15" cy="15" r="15" fill="var(--green)"/>
+        <path d="M15 24C7 19 7 10 15 6c8 4 8 13 0 18Z" fill="var(--sand)" opacity=".92"/>
+        <path d="M15 24V8" stroke="var(--green)" stroke-width="1.4"/>
+      </svg>
+      <span>
+        <span class="brand__name">Nabta <span class="brand__ar">نبتة</span></span>
+        <span class="brand__tag" data-i18n="brand.tagline">Indoor plants, Kuwait</span>
+      </span>
+    </a>
+
+    <nav class="nav" aria-label="Main">
+      <a href="#products" aria-current="page" data-i18n="nav.plants">Plants</a>
+      <a href="calendar.html" data-i18n="nav.calendar">Care calendar</a>
+      <a href="login.html" data-account data-hide-sm>Sign in</a>
+
+      <button class="icon-btn icon-btn--lang" data-action="lang" data-i18n="nav.lang">العربية</button>
+
+      <button class="icon-btn" data-action="theme" data-i18n-label="nav.theme" aria-label="Toggle dark mode">
+        <svg viewBox="0 0 24 24" width="19" height="19" aria-hidden="true">
+          <path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z"
+                fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+        </svg>
+      </button>
+
+      <button class="icon-btn" data-action="cart" data-i18n-label="nav.cart" aria-label="Cart">
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+          <path d="M5 8h14l-1.2 11a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8L5 8Z"
+                fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+          <path d="M9 8V6.5a3 3 0 0 1 6 0V8" fill="none" stroke="currentColor" stroke-width="1.6"/>
+        </svg>
+        <span class="count" data-cart-count hidden aria-live="polite">0</span>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <!-- ---------------------------------------------------------- hero -->
+  <section class="hero">
+    <div class="wrap hero__in">
+      <div>
+        <p class="hero__eyebrow" data-i18n="hero.eyebrow">Six plants. Chosen slowly.</p>
+        <h1 data-i18n-html="hero.titleHtml">See how it grows <em>before</em> you buy it.</h1>
+        <p class="hero__body" data-i18n="hero.body">
+          Every plant on this page arrives young and small. Hover it — or tap it — and watch it
+          grow to full height next to a person, so you know exactly what you are inviting into the room.
+        </p>
+        <div class="hero__cta">
+          <a class="btn btn--primary" href="#products" data-i18n="hero.cta">Browse the plants</a>
+          <a class="btn btn--ghost" href="calendar.html" data-i18n="hero.cta2">How the calendar works</a>
+        </div>
+      </div>
+      <div class="hero__demo" id="hero-stage"></div>
+    </div>
+  </section>
+
+  <!-- ------------------------------------------------------- the shop -->
+  <section class="wrap shop-head" id="shop">
+    <h2 data-i18n="shop.title">The collection</h2>
+    <p data-i18n="shop.subtitle">Each plant gets its own space. Hover or tap the illustration to grow it.</p>
+  </section>
+
+  <div class="wrap">
+    <form class="filters" role="search" aria-label="Filter plants" onsubmit="return false">
+      <div class="filters__f">
+        <label for="f-search" data-i18n="filters.search">Search plants</label>
+        <input type="search" id="f-search" data-i18n-ph="filters.searchPlaceholder"
+               placeholder="Monstera, olive, pothos…" autocomplete="off">
+      </div>
+
+      <div class="filters__f">
+        <label for="f-light" data-i18n="filters.light">Light</label>
+        <select id="f-light">
+          <option value="any" data-i18n="filters.lightAny">Any light</option>
+          <option value="low" data-i18n="filters.lightLow">Low light</option>
+          <option value="bright" data-i18n="filters.lightBright">Bright indirect</option>
+          <option value="direct" data-i18n="filters.lightDirect">Direct sun</option>
+        </select>
+      </div>
+
+      <div class="filters__f">
+        <label for="f-size" data-i18n="filters.size">Size when grown</label>
+        <select id="f-size">
+          <option value="any" data-i18n="filters.sizeAny">Any size</option>
+          <option value="s" data-i18n="filters.sizeS">Under 1 m</option>
+          <option value="m" data-i18n="filters.sizeM">1 – 2 m</option>
+          <option value="l" data-i18n="filters.sizeL">Over 2 m</option>
+        </select>
+      </div>
+
+      <div class="filters__f">
+        <label for="f-care" data-i18n="filters.care">Care level</label>
+        <select id="f-care">
+          <option value="any" data-i18n="filters.careAny">Any level</option>
+          <option value="easy" data-i18n="badge.care.easy">Easy</option>
+          <option value="medium" data-i18n="badge.care.medium">Medium</option>
+          <option value="expert" data-i18n="badge.care.expert">Expert</option>
+        </select>
+      </div>
+
+      <div class="filters__f">
+        <label for="f-price" data-i18n="filters.maxPrice">Max price</label>
+        <input type="range" id="f-price" min="5" max="40" step="0.5" value="40">
+        <output class="filters__out" id="f-price-out">40.000 KWD</output>
+      </div>
+
+      <div class="filters__f">
+        <label class="switch">
+          <input type="checkbox" id="f-pet">
+          <span data-i18n="filters.petSafe">Pet-safe only</span>
+        </label>
+        <label class="sr-only" for="f-sort">Sort</label>
+        <select id="f-sort">
+          <option value="featured" data-i18n="filters.sortFeatured">Featured</option>
+          <option value="priceAsc" data-i18n="filters.sortPriceAsc">Price: low to high</option>
+          <option value="priceDesc" data-i18n="filters.sortPriceDesc">Price: high to low</option>
+          <option value="name" data-i18n="filters.sortName">Name A–Z</option>
+          <option value="height" data-i18n="filters.sortHeight">Tallest when grown</option>
+        </select>
+      </div>
+    </form>
+
+    <div class="result-row">
+      <p id="count" aria-live="polite">Showing 6 of 6 plants</p>
+      <div id="chips" hidden></div>
+      <button class="link" data-action="clear" data-i18n="filters.clear">Clear all</button>
+    </div>
+
+    <!-- One section per plant, built by js/shop.js -->
+    <div class="products" id="products"></div>
+
+    <div class="empty" id="empty" hidden>
+      <p data-i18n="filters.empty">No plants match those filters.</p>
+      <p class="muted" data-i18n="filters.emptyHint">Try widening the light or price range.</p>
+    </div>
+  </div>
+
+  <!-- ------------------------------------------------------ care tips -->
+  <section class="tips" id="care">
+    <div class="wrap" data-reveal>
+      <h2 data-i18n="care.title">Three things that kill houseplants in Kuwait</h2>
+      <div class="tips__grid">
+        <article class="tip">
+          <p class="tip__n">01</p>
+          <h3 data-i18n="care.1.t">The air-conditioning vent</h3>
+          <p data-i18n="care.1.b">Constant cold draught dries leaf edges brown within weeks. Keep every plant at least a metre from a vent.</p>
+        </article>
+        <article class="tip">
+          <p class="tip__n">02</p>
+          <h3 data-i18n="care.2.t">Too much kindness</h3>
+          <p data-i18n="care.2.b">Overwatering kills more plants than drought. Push a finger in — if the soil is damp, wait another day.</p>
+        </article>
+        <article class="tip">
+          <p class="tip__n">03</p>
+          <h3 data-i18n="care.3.t">Summer glass</h3>
+          <p data-i18n="care.3.b">From June to August, direct light through a window can scorch leaves. Pull plants back half a metre or diffuse it.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap site-footer__in">
+    <p>Nabta نبتة · <span data-i18n="foot.rights">A student project. Plants, prices and delivery are illustrative.</span></p>
+    <p data-i18n="foot.made">Built with HTML, CSS and JavaScript.</p>
+  </div>
+</footer>
+
+<!-- ------------------------------------------------------- cart drawer -->
+<div class="drawer" role="dialog" aria-modal="true" aria-labelledby="cart-title" aria-hidden="true">
+  <div class="drawer__scrim"></div>
+  <div class="drawer__panel">
+    <div class="drawer__head">
+      <h2 id="cart-title" data-i18n="cart.title">Your cart</h2>
+      <button class="drawer__close" data-i18n-label="cart.close" aria-label="Close cart">
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+          <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.8"/>
+        </svg>
+      </button>
+    </div>
+    <div class="drawer__body" id="cart-body"></div>
+    <div class="drawer__foot" id="cart-foot" hidden>
+      <div id="cart-progress"></div>
+      <div class="row"><span data-i18n="cart.subtotal">Subtotal</span><span id="cart-sub">—</span></div>
+      <div class="row"><span data-i18n="cart.shipping">Delivery</span><span id="cart-ship">—</span></div>
+      <div class="row row--total"><span data-i18n="cart.total">Total</span><span id="cart-total">—</span></div>
+      <button class="btn btn--primary" data-action="checkout" data-i18n="cart.checkout">Place order</button>
+    </div>
+  </div>
+</div>
+
+<!-- Plain scripts in dependency order, so the site also works when
+     index.html is simply double-clicked (ES modules cannot load over file://). -->
+<script src="js/i18n.js" defer></script>
+<script src="data/products.js" defer></script>
+<script src="js/plants.js" defer></script>
+<script src="js/app.js" defer></script>
+<script src="js/shop.js" defer></script>
+</body>
+</html>

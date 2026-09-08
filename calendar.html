@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Care calendar — Nabta نبتة</title>
+<meta name="description" content="A watering, rotating and feeding schedule counted from the day each plant was bought, adjusted for the Kuwait summer.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..500&family=Inter:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap site-header__in">
+    <a class="brand" href="index.html">
+      <svg class="brand__mark" width="30" height="30" viewBox="0 0 30 30" aria-hidden="true">
+        <circle cx="15" cy="15" r="15" fill="var(--green)"/>
+        <path d="M15 24C7 19 7 10 15 6c8 4 8 13 0 18Z" fill="var(--sand)" opacity=".92"/>
+        <path d="M15 24V8" stroke="var(--green)" stroke-width="1.4"/>
+      </svg>
+      <span>
+        <span class="brand__name">Nabta <span class="brand__ar">نبتة</span></span>
+        <span class="brand__tag" data-i18n="brand.tagline">Indoor plants, Kuwait</span>
+      </span>
+    </a>
+    <nav class="nav" aria-label="Main">
+      <a href="index.html#products" data-i18n="nav.plants">Plants</a>
+      <a href="calendar.html" aria-current="page" data-i18n="nav.calendar">Care calendar</a>
+      <a href="login.html" data-account data-hide-sm>Sign in</a>
+      <button class="icon-btn icon-btn--lang" data-action="lang" data-i18n="nav.lang">العربية</button>
+      <button class="icon-btn" data-action="theme" data-i18n-label="nav.theme" aria-label="Toggle dark mode">
+        <svg viewBox="0 0 24 24" width="19" height="19" aria-hidden="true">
+          <path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z"
+                fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap cal-page">
+
+  <div class="cal-head">
+    <h1 data-i18n="cal.title">Care calendar</h1>
+    <p data-i18n="cal.subtitle">Watering is counted from the day each plant was bought.</p>
+    <p id="cal-hello" hidden></p>
+  </div>
+
+  <div class="cal-grid">
+
+    <!-- ------------------------------------------------ the month grid -->
+    <section class="panel">
+      <div class="panel__head">
+        <h2 data-i18n="cal.title">Care calendar</h2>
+        <div class="month-nav">
+          <button type="button" data-action="prev" data-i18n-label="cal.prev" aria-label="Previous month">‹</button>
+          <span id="month-label" aria-live="polite">—</span>
+          <button type="button" data-action="next" data-i18n-label="cal.nextM" aria-label="Next month">›</button>
+        </div>
+      </div>
+
+      <div class="dows" id="dows" aria-hidden="true"></div>
+      <div class="cal" id="grid" role="grid" aria-label="Month"></div>
+
+      <div class="legend">
+        <span><i class="dot dot--water"></i> <span data-i18n="cal.water">Water</span></span>
+        <span><i class="dot dot--rotate"></i> <span data-i18n="cal.rotate">Rotate</span></span>
+        <span><i class="dot dot--fertilise"></i> <span data-i18n="cal.fertilise">Feed</span></span>
+      </div>
+
+      <p class="summer-note" data-i18n="cal.summer">
+        Kuwait summer (June–August): watering intervals are automatically shortened by 30%.
+      </p>
+
+      <button class="btn btn--ghost btn--sm" data-action="export" style="margin-block-start:1.1rem"
+              data-i18n="cal.export">Export to calendar (.ics)</button>
+    </section>
+
+    <!-- ------------------------------------------- my plants + this week -->
+    <div>
+      <section class="panel">
+        <div class="panel__head"><h2 data-i18n="cal.mine">My plants</h2></div>
+        <div id="my-plants"></div>
+
+        <form class="add-form" id="add-form">
+          <div class="filters__f">
+            <label for="pick-plant" data-i18n="cal.addPlant">Plant</label>
+            <select id="pick-plant"></select>
+          </div>
+          <div class="filters__f">
+            <label for="buy-date" data-i18n="cal.addDate">Date bought</label>
+            <input type="date" id="buy-date">
+          </div>
+          <button class="btn btn--ghost btn--sm" type="submit" data-i18n="cal.addBtn">Start tracking</button>
+        </form>
+      </section>
+
+      <section class="panel">
+        <div class="panel__head"><h2 data-i18n="cal.next">Next 7 days</h2></div>
+        <ul class="tasks" id="upcoming"></ul>
+      </section>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap site-footer__in">
+    <p>Nabta نبتة · <span data-i18n="foot.rights">A student project. Plants, prices and delivery are illustrative.</span></p>
+    <p data-i18n="foot.made">Built with HTML, CSS and JavaScript.</p>
+  </div>
+</footer>
+
+<!-- Plain scripts in dependency order, so the site also works when
+     index.html is simply double-clicked (ES modules cannot load over file://). -->
+<script src="js/i18n.js" defer></script>
+<script src="data/products.js" defer></script>
+<script src="js/plants.js" defer></script>
+<script src="js/app.js" defer></script>
+<script src="js/calendar.js" defer></script>
+</body>
+</html>
