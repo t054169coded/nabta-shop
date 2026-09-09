@@ -21,10 +21,12 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 OUT = ROOT / "dist" / "vercel"
 REPO = "t054169coded/nabta-shop"
 
-PAGES = ["index.html", "login.html", "calendar.html"]
+PAGES = ["index.html", "login.html", "calendar.html",
+         "checkout.html", "confirmation.html"]
 ASSETS = [
     "css/styles.css", "js/i18n.js", "data/products.js", "js/plants.js",
     "js/app.js", "js/shop.js", "js/auth.js", "js/calendar.js",
+    "js/checkout.js", "js/confirmation.js",
 ]
 
 
