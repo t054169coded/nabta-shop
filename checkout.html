@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Checkout — Nabta نبتة</title>
+<meta name="description" content="Delivery details and payment method for your Nabta order.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..500&family=Inter:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap site-header__in">
+    <a class="brand" href="index.html">
+      <svg class="brand__mark" width="30" height="30" viewBox="0 0 30 30" aria-hidden="true">
+        <circle cx="15" cy="15" r="15" fill="var(--green)"/>
+        <path d="M15 24C7 19 7 10 15 6c8 4 8 13 0 18Z" fill="var(--sand)" opacity=".92"/>
+        <path d="M15 24V8" stroke="var(--green)" stroke-width="1.4"/>
+      </svg>
+      <span>
+        <span class="brand__name">Nabta <span class="brand__ar">نبتة</span></span>
+        <span class="brand__tag" data-i18n="brand.tagline">Indoor plants, Kuwait</span>
+      </span>
+    </a>
+    <nav class="nav" aria-label="Main">
+      <a href="index.html#products" data-i18n="nav.plants">Plants</a>
+      <a href="calendar.html" data-i18n="nav.calendar">Care calendar</a>
+      <a href="login.html" data-account data-hide-sm>Sign in</a>
+      <button class="icon-btn icon-btn--lang" data-action="lang" data-i18n="nav.lang">العربية</button>
+      <button class="icon-btn" data-action="theme" data-i18n-label="nav.theme" aria-label="Toggle dark mode">
+        <svg viewBox="0 0 24 24" width="19" height="19" aria-hidden="true">
+          <path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z"
+                fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap co-page">
+
+  <div class="co-head">
+    <h1 data-i18n="co.title">Checkout</h1>
+    <p data-i18n="co.subtitle">Two steps: where it goes, and how you would like to pay.</p>
+  </div>
+
+  <!-- Shown instead of the form when there is nothing to buy. -->
+  <div class="empty" id="co-empty" hidden>
+    <p data-i18n="co.empty">Your cart is empty.</p>
+    <p><a class="btn btn--ghost" href="index.html#products" data-i18n="co.emptyCta">Browse the plants</a></p>
+  </div>
+
+  <div class="co-grid" id="co-grid" hidden>
+
+    <form id="checkout-form" novalidate>
+
+      <!-- ------------------------------------------------ delivery -->
+      <section class="panel">
+        <div class="panel__head"><h2 data-i18n="co.delivery">Delivery details</h2></div>
+
+        <div class="co-fields">
+          <div class="field co-span2">
+            <label for="co-name" data-i18n="co.name">Full name</label>
+            <input type="text" id="co-name" autocomplete="name"
+                   data-i18n-ph="co.namePh" placeholder="Zahraa Almumen">
+            <p class="field__error" aria-live="polite"></p>
+          </div>
+
+          <div class="field co-span2">
+            <label for="co-phone" data-i18n="co.phone">Phone</label>
+            <div class="co-phone">
+              <span class="co-phone__code" aria-hidden="true">+965</span>
+              <input type="tel" id="co-phone" inputmode="numeric" maxlength="8"
+                     autocomplete="tel-national" data-i18n-ph="co.phonePh" placeholder="5xxxxxxx">
+            </div>
+            <p class="field__error" aria-live="polite"></p>
+          </div>
+
+          <div class="field co-span2">
+            <label for="co-gov" data-i18n="co.gov">Governorate</label>
+            <select id="co-gov"></select>
+            <p class="field__error" aria-live="polite"></p>
+          </div>
+
+          <div class="field co-span2">
+            <label for="co-area" data-i18n="co.area">Area</label>
+            <input type="text" id="co-area" data-i18n-ph="co.areaPh" placeholder="Salmiya">
+            <p class="field__error" aria-live="polite"></p>
+          </div>
+
+          <div class="field">
+            <label for="co-block" data-i18n="co.block">Block</label>
+            <input type="text" id="co-block" inputmode="numeric">
+            <p class="field__error" aria-live="polite"></p>
+          </div>
+
+          <div class="field">
+            <label for="co-street" data-i18n="co.street">Street</label>
+            <input type="text" id="co-street">
+            <p class="field__error" aria-live="polite"></p>
+          </div>
+
+          <div class="field">
+            <label for="co-building" data-i18n="co.building">Building / house</label>
+            <input type="text" id="co-building">
+            <p class="field__error" aria-live="polite"></p>
+          </div>
+
+          <div class="field">
+            <label for="co-floor">
+              <span data-i18n="co.floor">Floor and flat</span>
+              <span class="co-opt" data-i18n="co.optional">optional</span>
+            </label>
+            <input type="text" id="co-floor">
+            <p class="field__error" aria-live="polite"></p>
+          </div>
+
+          <div class="field co-span2">
+            <label for="co-notes">
+              <span data-i18n="co.notes">Notes for the driver</span>
+              <span class="co-opt" data-i18n="co.optional">optional</span>
+            </label>
+            <textarea id="co-notes" rows="2" data-i18n-ph="co.notesPh"
+                      placeholder="Ring the top bell — the plant is tall."></textarea>
+          </div>
+        </div>
+      </section>
+
+      <!-- ------------------------------------------------- payment -->
+      <section class="panel">
+        <div class="panel__head"><h2 data-i18n="co.payment">Payment</h2></div>
+
+        <div class="pay" id="pay-options">
+          <label class="pay__opt">
+            <input type="radio" name="pay" value="cash_on_delivery" checked>
+            <span class="pay__body">
+              <span class="pay__name" data-i18n="co.payCash">Cash on delivery</span>
+              <span class="pay__hint" data-i18n="co.payCashHint">Pay the driver when your plant arrives.</span>
+            </span>
+          </label>
+
+          <label class="pay__opt">
+            <input type="radio" name="pay" value="knet_on_delivery">
+            <span class="pay__body">
+              <span class="pay__name" data-i18n="co.payKnet">KNET card on delivery</span>
+              <span class="pay__hint" data-i18n="co.payKnetHint">The driver brings a card machine to your door.</span>
+            </span>
+          </label>
+
+          <!-- Deliberately unavailable. Collecting a card needs a payment
+               provider and a server; a convincing fake form would invite real
+               card numbers into a site that cannot protect them. -->
+          <label class="pay__opt is-disabled">
+            <input type="radio" name="pay" value="online" disabled>
+            <span class="pay__body">
+              <span class="pay__name" data-i18n="co.payOnline">Pay online by KNET or card</span>
+              <span class="pay__hint" data-i18n="co.payOnlineHint">Not part of this demo.</span>
+            </span>
+          </label>
+        </div>
+        <p class="field__error" id="pay-error" aria-live="polite"></p>
+      </section>
+
+      <button class="btn btn--primary co-submit" type="submit" data-i18n="co.place">Place order</button>
+      <p class="auth__note" data-i18n="co.demoNote">
+        A demo shop. No money moves and no card details are collected anywhere on this site.
+      </p>
+    </form>
+
+    <!-- -------------------------------------------------- summary -->
+    <aside class="panel co-summary">
+      <div class="panel__head"><h2 data-i18n="co.summary">Your order</h2></div>
+      <div id="co-lines"></div>
+      <div id="co-progress"></div>
+      <div class="row"><span data-i18n="cart.subtotal">Subtotal</span><span id="co-sub">—</span></div>
+      <div class="row"><span data-i18n="cart.shipping">Delivery</span><span id="co-ship">—</span></div>
+      <div class="row row--total"><span data-i18n="cart.total">Total</span><span id="co-total">—</span></div>
+    </aside>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap site-footer__in">
+    <p>Nabta نبتة · <span data-i18n="foot.rights">A student project. Plants, prices and delivery are illustrative.</span></p>
+    <p data-i18n="foot.made">Built with HTML, CSS and JavaScript.</p>
+  </div>
+</footer>
+
+<script src="js/i18n.js" defer></script>
+<script src="data/products.js" defer></script>
+<script src="js/plants.js" defer></script>
+<script src="js/app.js" defer></script>
+<script src="js/checkout.js" defer></script>
+</body>
+</html>
