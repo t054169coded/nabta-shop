@@ -26,7 +26,7 @@ PAGES = ["index.html", "login.html", "calendar.html",
 ASSETS = [
     "css/styles.css", "js/i18n.js", "data/products.js", "js/plants.js",
     "js/app.js", "js/shop.js", "js/auth.js", "js/calendar.js",
-    "js/checkout.js", "js/confirmation.js",
+    "js/checkout.js", "js/confirmation.js", "js/supabase.js",
 ]
 
 
