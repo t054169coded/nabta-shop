@@ -153,12 +153,25 @@ three `owned_plants` rows. Four bad orders were rejected as they should be:
 
 All of it rolled back, so the database still holds only the catalogue.
 
-## Not built yet
+## The site is connected
 
-The database is ready; the site still reads `localStorage`. Wiring it up means
-adding the Supabase JS client and replacing the bodies of `read`/`write` in
-`js/app.js` — the storage helpers are already the single choke point, which is
-what makes this a contained change rather than a rewrite.
+`js/supabase.js` does the wiring. localStorage stays the synchronous working
+copy the pages read; that file pulls on load and pushes on every `write()`.
+See the main [README](../README.md) for why it is built that way.
+
+Verified from the browser rather than assumed:
+
+| Check | Result |
+|---|---|
+| Catalogue served from this database | a price changed to `9.999` here appeared on the page while `products.json` still said `7.5` |
+| `products.json` fetched at all | no — the database answered first |
+| Falls back when the database is unreachable | 6 products, pots and care tips still load from the bundled copies |
+| Anonymous read of `cart_items` / `orders` / `owned_plants` / `profiles` | 0 rows |
+| Bad credentials at the auth endpoint | `invalid_credentials`, surfaced inline on the form |
+| Console errors on a clean load | none |
+
+Still empty until somebody signs up, because every row in those tables is
+keyed to an `auth.users` id — see below.
 
 Two things the schema deliberately does *not* invent, because the UI does not
 collect them: a delivery address (only country is asked for) and any payment
