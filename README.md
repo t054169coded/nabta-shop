@@ -53,6 +53,7 @@ js/i18n.js            every interface string, in English and Arabic
 js/plants.js          the six plants, drawn and animated as SVG
 js/app.js             cart, wishlist, owned plants, toasts, theme, header
 js/shop.js            product sections, the grow interaction, filters, drawer
+js/supabase.js        the account and the database: auth, catalogue, sync
 js/auth.js            sign-in form validation
 js/checkout.js        address validation, placing the order
 js/confirmation.js    renders one placed order
@@ -145,6 +146,47 @@ Placing an order writes an order record, starts each plant's watering schedule
 from that day, empties the cart, and sends you to the confirmation page. The
 order copies each plant's name and unit price at the time of purchase, so a
 later price change cannot rewrite an old receipt.
+
+## Connected to Supabase
+
+The catalogue, accounts, cart, plants and orders live in a Postgres database
+(see [supabase/README.md](supabase/README.md) for the schema). The wiring is in
+`js/supabase.js`.
+
+**How it fits a site built on synchronous storage.** The pages read state
+synchronously — `cart.items`, `owned.all` — and Supabase is asynchronous.
+Rather than rewrite every call site, localStorage stays the working copy the
+UI reads, and `js/supabase.js` keeps it in step:
+
+- **on page load or sign-in** it pulls from the database, overwrites the local
+  copy, and fires the change events the pages already listen to, so every view
+  re-renders itself
+- **on every `write()`** — the single choke point in `js/app.js` — it schedules
+  a debounced push of that key
+
+So the site still works with no network, and still works opened straight off
+the disk. It just forgets between devices, exactly as it did before.
+
+**The catalogue comes from the database first**, then `data/products.json`,
+then the mirror — each fallback a normal outcome, not an error. The remote
+attempt gives up after 2.5 seconds so a slow database never leaves you
+staring at placeholders.
+
+**Accounts are real.** Email and password go to Supabase Auth, which hashes
+the password on its own servers; no file here and no table in the schema ever
+holds one. This project has email confirmation switched on, so signing up
+sends a link that has to be clicked before the first sign-in.
+
+When Supabase cannot be reached — `file://`, or the CDN blocked — the sign-in
+page falls back to its original local-only behaviour and *says so on the
+page*, so it is never misleading about which one you got.
+
+**One rough edge, stated plainly:** cart, wishlist and plants are synced by
+replacing all of that user's rows. It is simple and can never drift from what
+the browser shows, but it is not crash-safe — a network drop between the
+delete and the insert leaves those rows empty in the database until the next
+successful push. localStorage still holds the truth locally, so nothing is
+actually lost, but a production shop would diff instead.
 
 ## Sign-in page
 
