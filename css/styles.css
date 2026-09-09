@@ -741,6 +741,14 @@ a.sr-only:focus-visible {
   margin-block-start: 1.3rem; font-size: .76rem; color: var(--muted);
   padding: .7rem .85rem; border: 1px dashed var(--line-strong); border-radius: var(--radius-s);
 }
+/* Real accounts get a solid, reassuring border; the local-only fallback keeps
+   the dashed "this is a stand-in" look. */
+.auth__note--live {
+  border-style: solid;
+  border-color: color-mix(in srgb, var(--leaf-3) 34%, transparent);
+  background: color-mix(in srgb, var(--leaf-3) 8%, transparent);
+  color: var(--ink);
+}
 #signed-in {
   display: flex; align-items: center; gap: 1rem; justify-content: space-between;
   padding: .9rem 1.1rem; margin-block-end: 1.6rem;
