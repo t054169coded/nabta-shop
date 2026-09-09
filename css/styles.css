@@ -991,6 +991,24 @@ a.sr-only:focus-visible {
   .brand__tag { display: none; }
   .add-form { grid-template-columns: 1fr; }
 
+  /* A panel heading and its controls cannot share one line on a narrow
+     screen. The calendar's month label reserved 9.5rem, which pushed the
+     whole month grid past the viewport — body's overflow-x: hidden was
+     quietly clipping it instead of showing a scrollbar. Let the row wrap. */
+  .panel__head { flex-wrap: wrap; row-gap: .55rem; }
+  .month-nav { margin-inline-start: auto; }
+  #month-label { min-inline-size: 6rem; }
+
+  /* The month grid's own minimum width was 372px — wider than the ~294px a
+     375px phone actually leaves inside .wrap and .panel — so the grid pushed
+     the page sideways. Tighter cells bring it inside that budget. */
+  .cal, .dows { gap: 3px; }
+  .cell { padding: .2rem; border-radius: 7px; }
+  .cell__n { font-size: .72rem; }
+  .cell__dots { gap: 2px; }
+  .dot { inline-size: 5px; block-size: 5px; }
+  .panel { padding: 1rem; }
+
   /* Let the header wrap onto a second line rather than dropping a nav link —
      hiding one would leave that page with no way in on a narrow screen. */
   .site-header__in { flex-wrap: wrap; row-gap: .2rem; padding-block: .5rem; }
@@ -998,6 +1016,14 @@ a.sr-only:focus-visible {
   .site-header__in { min-block-size: 0; }
   .nav { flex-wrap: wrap; justify-content: flex-end; }
   .nav a { padding-inline: .55rem; font-size: .86rem; }
+}
+
+/* Below about 360px the seven-column month grid cannot shrink any further
+   without the dates becoming unreadable, so let that panel scroll sideways in
+   its own box rather than pushing the whole page across. */
+@media (max-width: 400px) {
+  .wrap { padding-inline: 12px; }
+  .cal-page .panel { overflow-x: auto; }
 }
 
 /* Anyone who has asked their system to reduce motion sees the grown state
