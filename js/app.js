@@ -36,6 +36,18 @@ function write (key, value) {
   } catch {
     /* private browsing, or storage full — the page still works, just forgets. */
   }
+  /* Keep the database in step when somebody is signed in. Defined in
+     js/supabase.js; when that file is not loaded this is simply absent and
+     the site behaves exactly as it did before. */
+  if (typeof schedulePush === 'function') schedulePush(key);
+}
+
+/** Reject a promise that takes too long, so a slow network cannot stall a page. */
+function withTimeout (promise, ms) {
+  return Promise.race([
+    promise,
+    new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), ms))
+  ]);
 }
 
 /* ------------------------------------------------------------------- money */
@@ -48,13 +60,32 @@ const money = n => `${Number(n).toFixed(3)} ${t('currency')}`;
 let productCache = null;
 
 /**
- * Load the catalogue. data/products.json is the single source of truth and is
- * fetched normally when the site is served over http. The file:// protocol
- * blocks fetch(), so when the page has simply been double-clicked we fall
- * back to data/products.js, which holds a mirror of the same data.
+ * Load the catalogue, trying three sources in order of authority:
+ *   1. the Supabase database, so a price or stock change needs no redeploy
+ *   2. data/products.json over http
+ *   3. data/products.js, the mirror that works when the page was opened
+ *      by double-clicking (file:// blocks fetch)
+ * Each fallback is a normal outcome, not an error.
  */
 async function loadProducts () {
   if (productCache) return productCache;
+
+  if (typeof remoteProducts === 'function') {
+    try {
+      /* Short on purpose: the skeletons are already on screen, and a
+         Mumbai round trip is normally well under 300ms. If the database
+         is slow or down we would rather show the bundled catalogue than
+         make somebody stare at placeholders. */
+      const rows = await withTimeout(remoteProducts(), 2500);
+      if (rows?.length) {
+        productCache = rows;
+        return productCache;
+      }
+    } catch {
+      /* fall through to the bundled copies */
+    }
+  }
+
   try {
     const res = await fetch('data/products.json');
     if (!res.ok) throw new Error(res.status);
@@ -324,9 +355,15 @@ function initChrome () {
   document.addEventListener('wishchange', refresh);
   document.addEventListener('userchange', refresh);
   document.addEventListener('languagechange', refresh);
+  document.addEventListener('orderschange', refresh);
   refresh();
 
   revealOnScroll();
+
+  /* Not awaited: the page paints from localStorage straight away, and when
+     the pull finishes it fires the change events above so every view
+     re-renders itself with whatever the account actually holds. */
+  if (typeof restoreSession === 'function') restoreSession();
 }
 
 /** Fade sections in as they enter the viewport. */

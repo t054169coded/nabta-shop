@@ -1,7 +1,12 @@
 /* auth.js — the sign-in page.
-   DEMO ONLY. Nothing leaves the browser, nothing is encrypted, and no real
-   password should ever be typed here. Real authentication has to happen on a
-   server; this page exists to show form validation and country-aware delivery. */
+ *
+ * When Supabase is reachable this is a real account: email and password go to
+ * Supabase Auth, which hashes the password on its own servers. Nothing in this
+ * file, and no table in the schema, ever holds a password.
+ *
+ * When it is not reachable — opened straight off the disk, or the CDN blocked
+ * — it falls back to the original demo behaviour: a flag in localStorage. The
+ * page says which of the two you are getting, so it is never misleading. */
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i;
 
@@ -41,8 +46,23 @@ document.addEventListener('DOMContentLoaded', () => {
   wireTabs();
   wireForm();
   showSignedInState();
-  document.addEventListener('languagechange', () => { validateAll(true); showSignedInState(); });
+  reflectAuthMode();
+  document.addEventListener('languagechange', () => {
+    validateAll(true);
+    showSignedInState();
+    reflectAuthMode();
+  });
+  document.addEventListener('userchange', showSignedInState);
 });
+
+/** Say plainly whether this page is creating a real account or a local one. */
+function reflectAuthMode () {
+  const note = document.querySelector('.auth__note');
+  if (!note) return;
+  const live = typeof remoteAvailable === 'function' && remoteAvailable();
+  note.textContent = t(live ? 'login.liveNote' : 'login.demoNote');
+  note.classList.toggle('auth__note--live', live);
+}
 
 /* The plant standing beside the form uses the same studio as the shop. */
 async function drawAside () {
@@ -174,19 +194,61 @@ function wireForm () {
       : '';
   });
 
-  form.addEventListener('submit', e => {
+  form.addEventListener('submit', async e => {
     e.preventDefault();
     if (!validateAll()) {
       form.querySelector('.is-invalid input')?.focus();
       return;
     }
-    const name = isSignUp() ? f.name.value.trim() : (f.email.value.split('@')[0] || 'Friend');
-    setUser({
-      name,
-      email: f.email.value.trim(),
-      country: f.country.value.trim(),
-      remember: document.querySelector('#remember').checked
-    });
+
+    const submit = document.querySelector('#submit');
+    const label = submit.textContent;
+    const email = f.email.value.trim();
+    const country = f.country.value.trim();
+    const password = f.password.value;
+    const name = isSignUp() ? f.name.value.trim() : (email.split('@')[0] || 'Friend');
+
+    const live = typeof remoteAvailable === 'function' && remoteAvailable();
+
+    if (live) {
+      submit.disabled = true;
+      submit.textContent = t('login.working');
+
+      const result = isSignUp()
+        ? await remoteSignUp({ name, email, country, password, language: getLang() })
+        : await remoteSignIn({ email, password });
+
+      submit.disabled = false;
+      submit.textContent = label;
+
+      if (!result.ok) {
+        const msg = /already registered|already exists/i.test(result.message ?? '')
+          ? t('login.err.taken')
+          : /invalid login|credentials/i.test(result.message ?? '')
+            ? t('login.err.wrong')
+            : result.reason === 'offline' ? t('login.err.offline') : result.message;
+        setError(f.email, msg);
+        return;
+      }
+
+      if (result.needsConfirmation) {
+        clearErrors();
+        toast(t('login.checkEmail'));
+        return;
+      }
+
+      /* Sign-up carries the guest basket into the new account; sign-in then
+         takes whatever the account already holds as the truth. */
+      setUser({ name, email, country, remember: document.querySelector('#remember').checked });
+      if (isSignUp()) await pushAll();
+      await pullAll();
+      toast(t('login.welcome', { name: getUser()?.name ?? name }));
+      setTimeout(() => { location.href = 'calendar.html'; }, 700);
+      return;
+    }
+
+    /* No server reachable: the original local-only behaviour. */
+    setUser({ name, email, country, remember: document.querySelector('#remember').checked });
     toast(t('login.welcome', { name }));
     setTimeout(() => { location.href = 'calendar.html'; }, 800);
   });
@@ -213,9 +275,11 @@ function showSignedInState () {
   box.hidden = false;
   box.querySelector('p').textContent = t('login.welcome', { name: user.name });
   box.querySelector('button').textContent = t('login.signout');
-  box.querySelector('button').onclick = () => {
+  box.querySelector('button').onclick = async () => {
+    if (typeof remoteSignOut === 'function') await remoteSignOut();
     signOut();
     applyLanguage();
     showSignedInState();
+    reflectAuthMode();
   };
 }

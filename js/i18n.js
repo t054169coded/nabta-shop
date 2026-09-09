@@ -169,6 +169,13 @@ const STRINGS = {
     'cal.tracking': 'Now tracking this plant',
     'cal.stopped': 'Stopped tracking',
 
+    'login.liveNote': 'A real account. Your email and password are handled by Supabase Auth — this page never stores them — and your cart, plants and orders follow you to any device.',
+    'login.checkEmail': 'Account created. Check your email to confirm it, then sign in.',
+    'login.working': 'One moment…',
+    'login.err.taken': 'That email already has an account. Try signing in instead.',
+    'login.err.wrong': 'That email and password do not match an account.',
+    'login.err.offline': 'Cannot reach the server, so this sign-in stayed on your device only.',
+    'nav.syncing': 'Syncing…',
     'co.title': 'Checkout',
     'co.subtitle': 'Two steps: where it goes, and how you would like to pay.',
     'co.delivery': 'Delivery details',
@@ -402,6 +409,13 @@ const STRINGS = {
     'cal.tracking': 'تتم متابعة هذه النبتة الآن',
     'cal.stopped': 'تم إيقاف المتابعة',
 
+    'login.liveNote': 'حساب حقيقي. بريدك وكلمة مرورك تُدار عبر Supabase Auth — هذه الصفحة لا تخزنهما — وسلتك ونباتاتك وطلباتك تنتقل معك إلى أي جهاز.',
+    'login.checkEmail': 'تم إنشاء الحساب. تحقق من بريدك لتأكيده ثم سجّل الدخول.',
+    'login.working': 'لحظة…',
+    'login.err.taken': 'هذا البريد له حساب بالفعل. جرّب تسجيل الدخول.',
+    'login.err.wrong': 'البريد وكلمة المرور لا يطابقان أي حساب.',
+    'login.err.offline': 'لا يمكن الوصول للخادم، لذلك بقي تسجيل الدخول على جهازك فقط.',
+    'nav.syncing': 'جارٍ المزامنة…',
     'co.title': 'إتمام الشراء',
     'co.subtitle': 'خطوتان: إلى أين تُوصَّل، وكيف تحب أن تدفع.',
     'co.delivery': 'تفاصيل التوصيل',
@@ -485,6 +499,9 @@ function t (key, vars = {}) {
 /** Fill every [data-i18n] element on the page, and flip the document direction. */
 function applyLanguage (lang = getLang()) {
   localStorage.setItem('nabta.lang', lang);
+  /* i18n writes this key directly rather than through app.js's write(), so
+     the sync hook has to be called here too. */
+  if (typeof schedulePush === 'function') schedulePush('nabta.lang');
   const html = document.documentElement;
   html.lang = lang;
   html.dir = lang === 'ar' ? 'rtl' : 'ltr';
