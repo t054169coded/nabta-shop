@@ -835,6 +835,139 @@ a.sr-only:focus-visible {
 }
 .add-form label { font-size: .72rem; letter-spacing: .07em; text-transform: uppercase; color: var(--muted); }
 
+/* ------------------------------------------- 11b. checkout + confirmation */
+
+.co-page, .cf-page { padding-block: clamp(2rem, 5vw, 3.4rem) 5rem; }
+
+.co-head { margin-block-end: 2rem; }
+.co-head h1 { font-size: clamp(2rem, 4vw, 2.9rem); letter-spacing: -.025em; }
+.co-head p  { color: var(--muted); margin-block-start: .55rem; }
+
+/* Form on the left, order summary sticky on the right. */
+.co-grid {
+  display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(280px, .8fr);
+  gap: clamp(1.4rem, 3vw, 2.2rem); align-items: start;
+}
+.co-grid form { display: grid; gap: 1.4rem; }
+
+.co-fields { display: grid; grid-template-columns: 1fr 1fr; gap: .3rem 1rem; }
+.co-span2  { grid-column: span 2; }
+.co-fields .field { margin-block-end: .7rem; }
+.co-fields label { display: flex; align-items: baseline; gap: .45rem; }
+
+.co-opt {
+  font-size: .68rem; letter-spacing: .06em; text-transform: uppercase;
+  color: var(--muted); font-weight: 400;
+}
+
+.co-fields select, .co-fields textarea {
+  font: 400 .95rem var(--sans);
+  padding: .8rem .9rem;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-s);
+  background: var(--card); color: var(--ink);
+  inline-size: 100%; resize: vertical;
+}
+.co-fields select { appearance: none; padding-inline-end: 2rem;
+  background-image: linear-gradient(45deg, transparent 49%, currentColor 50%),
+                    linear-gradient(-45deg, transparent 49%, currentColor 50%);
+  background-size: 6px 6px, 6px 6px;
+  background-position: right 1rem center, right .65rem center;
+  background-repeat: no-repeat;
+}
+:root[dir="rtl"] .co-fields select { background-position: left .65rem center, left 1rem center; }
+.field.is-invalid select { border-color: #C6543A; }
+
+/* +965 sits inside the field, so the 8 digits are all that gets typed. */
+.co-phone { display: flex; align-items: stretch; }
+.co-phone__code {
+  display: flex; align-items: center; padding-inline: .8rem;
+  font-size: .92rem; color: var(--muted);
+  background: var(--sand-2);
+  border: 1px solid var(--line-strong);
+  border-start-start-radius: var(--radius-s);
+  border-end-start-radius: var(--radius-s);
+  border-inline-end: 0;
+  font-variant-numeric: tabular-nums;
+}
+.co-phone input {
+  flex: 1; min-inline-size: 0;
+  border-start-start-radius: 0 !important;
+  border-end-start-radius: 0 !important;
+  font-variant-numeric: tabular-nums; letter-spacing: .04em;
+}
+
+/* ---- payment method ---- */
+
+.pay { display: grid; gap: .6rem; }
+.pay__opt {
+  display: flex; gap: .8rem; align-items: flex-start;
+  padding: .95rem 1.05rem;
+  border: 1px solid var(--line-strong); border-radius: var(--radius-s);
+  cursor: pointer; transition: border-color .2s, background .2s;
+}
+.pay__opt:hover { border-color: var(--ink); }
+.pay__opt input { margin-block-start: .18rem; accent-color: var(--green); flex: none; }
+.pay__opt:has(input:checked) { border-color: var(--green); background: color-mix(in srgb, var(--leaf-3) 9%, transparent); }
+.pay__opt:has(input:focus-visible) { outline: 2.5px solid var(--terra); outline-offset: 2px; }
+.pay__body { display: grid; gap: .2rem; }
+.pay__name { font-weight: 500; font-size: .95rem; }
+.pay__hint { font-size: .82rem; color: var(--muted); }
+
+/* The online option stays visible so the reason it is absent is legible. */
+.pay__opt.is-disabled { cursor: not-allowed; opacity: .62; border-style: dashed; }
+.pay__opt.is-disabled:hover { border-color: var(--line-strong); }
+
+.co-submit { inline-size: 100%; }
+
+/* ---- order summary ---- */
+
+.co-summary { position: sticky; inset-block-start: 92px; }
+.co-summary .row { display: flex; justify-content: space-between; font-size: .9rem; padding-block: .28rem; }
+.co-summary .row--total,
+.cf-page .row--total {
+  font-family: var(--serif); font-size: 1.15rem;
+  padding-block-start: .6rem; margin-block-start: .4rem;
+  border-block-start: 1px solid var(--line);
+}
+.cf-page .row { display: flex; justify-content: space-between; font-size: .9rem; padding-block: .28rem; }
+
+.co-line { display: flex; gap: .8rem; justify-content: space-between; padding-block: .7rem; border-block-end: 1px solid var(--line); }
+.co-line:last-of-type { border-block-end: 0; }
+.co-line__name  { font-size: .92rem; font-weight: 500; }
+.co-line__meta  { font-size: .78rem; color: var(--muted); margin-block-start: .1rem; }
+.co-line__price { font-size: .9rem; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.co-away { font-size: .78rem; margin-block: .5rem .9rem; }
+.co-summary .ok { color: var(--leaf-1); font-weight: 500; }
+
+/* ---- confirmation ---- */
+
+.cf-head { text-align: center; margin-block-end: 2.4rem; }
+.cf-tick { color: var(--leaf-1); margin-inline: auto; margin-block-end: 1rem; }
+.cf-head h1 { font-size: clamp(1.8rem, 3.6vw, 2.6rem); letter-spacing: -.02em; }
+.cf-head p  { margin-block-start: .7rem; max-inline-size: 52ch; margin-inline: auto; font-size: .92rem; }
+
+.cf-grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: clamp(1.4rem, 3vw, 2.2rem); align-items: start; }
+
+.cf-dl { display: grid; grid-template-columns: auto 1fr; gap: .5rem 1.1rem; margin: 0; font-size: .9rem; }
+.cf-dl dt { color: var(--muted); font-size: .78rem; letter-spacing: .05em; text-transform: uppercase; padding-block-start: .15rem; }
+.cf-dl dd { margin: 0; }
+.cf-dl .cf-notes { grid-column: 2; font-size: .85rem; font-style: italic; }
+
+.cf-schedule .btn { inline-size: 100%; margin-block-start: 1.1rem; }
+
+@media (max-width: 900px) {
+  .co-grid, .cf-grid { grid-template-columns: 1fr; }
+  .co-summary { position: static; }
+}
+@media (max-width: 560px) {
+  .co-fields { grid-template-columns: 1fr; }
+  .co-span2 { grid-column: span 1; }
+  .cf-dl { grid-template-columns: 1fr; gap: .15rem; }
+  .cf-dl dd { margin-block-end: .6rem; }
+  .cf-dl .cf-notes { grid-column: 1; }
+}
+
 /* ------------------------------------------ 12. responsive, motion and RTL */
 
 @media (max-width: 1080px) {
