@@ -13,6 +13,8 @@ const KEY = {
   wish: 'nabta.wishlist',
   plants: 'nabta.plants',
   user: 'nabta.user',
+  orders: 'nabta.orders',
+  orderSeq: 'nabta.orderSeq',
   theme: 'nabta.theme'
 };
 
@@ -179,12 +181,13 @@ const wishlist = {
 const owned = {
   get all () { return read(KEY.plants, []); },
 
-  add (productId, boughtOn, pot = null) {
+  add (productId, boughtOn, pot = null, orderId = null) {
     const list = this.all;
     list.push({
       uid: `${productId}-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
       id: productId,
       pot,
+      orderId,
       boughtOn,
       lastWatered: null,
       doneTasks: []
@@ -203,6 +206,40 @@ const owned = {
     write(KEY.plants, list);
     document.dispatchEvent(new CustomEvent('plantschange'));
   }
+};
+
+/* ------------------------------------------------------------------ orders */
+
+/** Placed orders.
+ *  Front-end only for now, but shaped exactly like the Supabase `orders` and
+ *  `order_items` tables — including copying the unit price at purchase, so a
+ *  later price change cannot rewrite what someone actually paid. Moving this
+ *  to the database is a change to these three functions and nothing else. */
+const orders = {
+  get all () { return read(KEY.orders, []); },
+
+  /** Next human-facing order number. Real shops get this from a sequence; the
+   *  database has `orders.order_no` as an identity column for exactly this. */
+  nextNumber () {
+    const next = read(KEY.orderSeq, 1041) + 1;
+    write(KEY.orderSeq, next);
+    return next;
+  },
+
+  place ({ items, subtotal, delivery, total, address, paymentMethod, country }) {
+    const order = {
+      id: `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 6)}`,
+      orderNo: this.nextNumber(),
+      placedAt: new Date().toISOString(),
+      status: 'pending',
+      items, subtotal, delivery, total, address, paymentMethod, country
+    };
+    write(KEY.orders, [order, ...this.all]);
+    document.dispatchEvent(new CustomEvent('orderschange'));
+    return order;
+  },
+
+  find (id) { return this.all.find(o => o.id === id) ?? null; }
 };
 
 /* --------------------------------------------------------------------- user */

@@ -507,17 +507,11 @@ function miniLeaf (p) {
   </svg>`;
 }
 
-/* Placing an order is what starts each plant's watering schedule. */
+/* The drawer hands off to the checkout page, which is where the delivery
+   address and payment method are actually collected. */
 function wireCheckout () {
   document.querySelector('[data-action="checkout"]')?.addEventListener('click', () => {
     if (!cart.items.length) return;
-    const today = isoDate(new Date());
-    cart.items.forEach(item => {
-      for (let i = 0; i < item.qty; i++) owned.add(item.id, today, item.pot);
-    });
-    cart.clear();
-    document.dispatchEvent(new Event('cart:close'));
-    toast(t('cart.ordered'));
-    setTimeout(() => { location.href = 'calendar.html'; }, 900);
+    location.href = 'checkout.html';
   });
 }
